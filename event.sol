@@ -11,10 +11,14 @@ contract EventArrange {
 
         address Organizer;
         string Event_Name;
-        
+        uint Event_Date;
+        uint Total_Tickets;
+        uint Remaining_Tickets;
 
+    }
 
-
+    function CreateEvent() {
+        code
     }
 
     
