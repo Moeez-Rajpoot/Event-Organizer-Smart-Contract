@@ -22,7 +22,6 @@ contract EventArrange {
         uint Price;
         uint Total_Tickets;
         uint Remaining_Tickets;
-        
 
     }
 
