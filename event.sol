@@ -59,6 +59,4 @@ contract EventArrange {
        Tickets[to][_Eventid]+=quantity;
         
     }
-
-    
 }
