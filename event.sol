@@ -24,12 +24,13 @@ contract EventArrange {
     }
 
     function CreateEvent(string memory name , uint _date , uint total_ticket,  uint price_per_ticket)  external {
-         require(_date > block.timestamp , " Please Set The date for Future Event");
+         require(block.timestamp+_date > block.timestamp , " Please Set The date for Future Event");
          require( bytes(name).length > 0  , "Event Name is Required");
+         require(msg.sender== Manager , "You are not a Manager");
          require( total_ticket > 0, "No of Tickets are not Enough");
          require(price_per_ticket > 0 ,"Price of Ticket is so Small");
 
-         EventLocation[EventID] = Event(msg.sender,name,_date, price_per_ticket ,total_ticket,total_ticket);
+         EventLocation[EventID] = Event(msg.sender,name,block.timestamp+_date, price_per_ticket ,total_ticket,total_ticket);
          EventID++;
 
     }
