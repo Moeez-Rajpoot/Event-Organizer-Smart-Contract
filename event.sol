@@ -11,6 +11,9 @@ contract EventArrange {
     constructor() {
         Manager = msg.sender;
     }
+
+    event booked (address person , uint quantity , uint amount );
+    event Transfered (address _from , address to , uint quantity);
     struct Event{
 
         address Organizer;
@@ -23,14 +26,14 @@ contract EventArrange {
 
     }
 
-    function CreateEvent(string memory name , uint _date , uint total_ticket,  uint price_per_ticket)  external {
+    function CreateEvent( address organizer,string memory name , uint _date , uint total_ticket,  uint price_per_ticket)  external {
          require(block.timestamp+_date > block.timestamp , " Please Set The date for Future Event");
          require( bytes(name).length > 0  , "Event Name is Required");
          require(msg.sender== Manager , "You are not a Manager");
          require( total_ticket > 0, "No of Tickets are not Enough");
          require(price_per_ticket > 0 ,"Price of Ticket is so Small");
 
-         EventLocation[EventID] = Event(msg.sender,name,block.timestamp+_date, price_per_ticket ,total_ticket,total_ticket);
+         EventLocation[EventID] = Event(organizer,name,block.timestamp+_date, price_per_ticket ,total_ticket,total_ticket);
          EventID++;
 
     }
@@ -40,12 +43,14 @@ contract EventArrange {
          require(Eventvar.Event_Date > block.timestamp, "Tickets are Closed");
          require(quantity < Eventvar.Total_Tickets, "Can't buy more than Total Supply");
          require(quantity <= Eventvar.Remaining_Tickets ,"Not Enough Tickets");
-         require(msg.value == (Eventvar.Price * quantity), "Not Enough Ethers");
+         require(msg.value >= (Eventvar.Price * quantity), "Not Enough Ethers");
 
          Eventvar.Remaining_Tickets -= quantity;
          Tickets[msg.sender][_Eventid] += quantity;
          address payable ORG = payable(Eventvar.Organizer);
          ORG.transfer(msg.value);
+
+         emit booked(msg.sender, quantity, Eventvar.Price * quantity );
  
     }
 
@@ -57,6 +62,10 @@ contract EventArrange {
 
        Tickets[msg.sender][_Eventid]-=quantity;
        Tickets[to][_Eventid]+=quantity;
+
+       emit Transfered(msg.sender, to, quantity);
         
     }
+
+    
 }
