@@ -9,6 +9,7 @@ contract EventArrange {
     mapping(address=>mapping(uint=>uint))  public Tickets;
 
     constructor() {
+        
         Manager = msg.sender;
     }
 
