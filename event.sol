@@ -15,6 +15,7 @@ contract EventArrange {
 
     event booked (address person , uint quantity , uint amount );
     event Transfered (address _from , address to , uint quantity);
+    
     struct Event{
 
         address Organizer;
